@@ -2,3 +2,8 @@ name: SlackNotifier
 version: 0.1.0
 main: dev.amotarao.spigot.slacknotifier.SlackNotifier
 api-version: 1.16
+commands:
+  slack-notifier:
+    description: Set Slack Webhook
+    usage: /slack-notifier [set <url>/get]
+    permission: 3
