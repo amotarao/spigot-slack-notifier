@@ -33,6 +33,12 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
         sendMessage("joined", name);
     }
 
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent e) {
+        String name = e.getPlayer().getName();
+        sendMessage("left", name);
+    }
+
     private void sendMessage(String type, String name) {
         HttpsURLConnection con = null;
         StringBuffer result = new StringBuffer();
