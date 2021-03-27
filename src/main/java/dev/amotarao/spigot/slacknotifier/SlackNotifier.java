@@ -8,6 +8,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -18,7 +19,10 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        FileConfiguration config = getConfig();
+        config.addDefault("slack-notifer.url", "");
+        saveConfig();
+
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -43,9 +47,16 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
         HttpsURLConnection con = null;
         StringBuffer result = new StringBuffer();
         String JSON = "{\"type\":\"" + type + "\",\"name\":\"" + name + "\"}";
+        
+        FileConfiguration config = getConfig();
+        String urlAddress = config.getString("slack-notifer.url", "");
+
+        if (urlAddress == "") {
+            return;
+        }
 
         try {
-            URL url = new URL("");
+            URL url = new URL(urlAddress);
             con = (HttpsURLConnection) url.openConnection();
             con.setDoOutput(true);
             con.setRequestMethod("POST");
