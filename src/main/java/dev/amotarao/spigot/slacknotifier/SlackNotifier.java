@@ -48,7 +48,7 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
         HttpsURLConnection con = null;
         StringBuffer result = new StringBuffer();
         String JSON = "{\"type\":\"" + type + "\",\"name\":\"" + name + "\"}";
-        
+
         FileConfiguration config = getConfig();
         String urlAddress = config.getString("slack-notifer.url", "");
 
@@ -64,7 +64,7 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/JSON; charset=utf-8");
             con.setRequestProperty("Content-Length", String.valueOf(JSON.length()));
-            
+
             OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
             out.write(JSON);
             out.flush();
