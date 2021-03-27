@@ -21,7 +21,7 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         FileConfiguration config = getConfig();
-        config.addDefault("slack-notifer.url", "");
+        config.addDefault("slack-notifier.url", "");
         saveConfig();
 
         getServer().getPluginManager().registerEvents(this, this);
@@ -50,7 +50,7 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
         String JSON = "{\"type\":\"" + type + "\",\"name\":\"" + name + "\"}";
 
         FileConfiguration config = getConfig();
-        String urlAddress = config.getString("slack-notifer.url", "");
+        String urlAddress = config.getString("slack-notifier.url", "");
 
         if (urlAddress == "") {
             getLogger().log(Level.WARNING, "Invalid URL");
