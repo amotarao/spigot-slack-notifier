@@ -9,6 +9,9 @@ import java.util.logging.Level;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,6 +29,7 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
         saveConfig();
 
         getServer().getPluginManager().registerEvents(this, this);
+        getCommand("slack-notifier").setExecutor(new SlackNotifierCommand());
     }
 
     @Override
@@ -95,6 +99,36 @@ public final class SlackNotifier extends JavaPlugin implements Listener {
         } finally {
             if (con != null) {
                 con.disconnect();
+            }
+        }
+    }
+
+    public class SlackNotifierCommand implements CommandExecutor {
+        @Override
+        public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+            FileConfiguration config = getConfig();
+            String url = config.getString("url", "");
+
+            switch (args[0]) {
+                case "get": {
+                    sender.sendMessage(url);
+                    return true;
+                }
+
+                case "set": {
+                    String newUrl = args[1];
+                    if (newUrl == "" || args.length < 2) {
+                        return false;
+                    }
+                    config.set("url", args[1]);
+                    saveConfig();
+                    sender.sendMessage("URL is set.");
+                    return true;
+                }
+
+                default: {
+                    return false;
+                }
             }
         }
     }
